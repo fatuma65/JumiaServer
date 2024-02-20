@@ -4,46 +4,46 @@ const CartItem = require("../connect/models/CartItem");
 
 const addProductToCart = async (req, res) => {
   try {
-    const { productId, quantity, userId } = req.body;
+    // this is what is requested from the server
+    const { productId, quantity, UserId } = req.body;
     console.log(req.body);
+    console.log("UserId:", UserId);
 
-    const cart = await CartModel.findOne({ where: { UserId: userId } });
+    // look for the User with a specified cart id
+    const cart = await CartModel.findOne({ where: { UserId: UserId } });
     if (!cart) {
-      await CartModel.create({ UserId: userId });
+      // if cart is not found, we create one with the user id
+      await CartModel.create({ UserId: UserId });
     }
     console.log("cart created successfully");
-
+    // if successful, we look for the product and its id
     const product = await Product.findByPk(productId);
     if (!product) {
       return res.status(400).send("No product in the cart items");
     }
 
-    console.log("UserId:", userId);
     let cartItem = await CartItem.findOne({
       where: { cartId: cart.id, productId: productId },
     });
     if (cartItem) {
-      const newQuantity = cartItem.quantity + quantity;
+      const newQuantity = cartItem.quantity + parseInt(quantity, 10);
       console.log(newQuantity);
-      await cartItem.update({ quantity: newQuantity });
-      let total = product.price * quantity;
-      console.log(total);
-      await cartItem.update({ totalPrice: total });
+      let totalPrice = product.price * newQuantity;
+      console.log(totalPrice);
+      await cartItem.update({ quantity: newQuantity, totalPrice: totalPrice });
     } else {
       cartItem = await CartItem.create({
         cartId: cart.id,
         productId: productId,
-        quantity,
+        quantity: parseInt(quantity, 10),
+        // UserId
         // totalPrice:total
       });
     }
     console.log(cartItem);
 
-    res.status(200).json({
-      message: "Product added to Cart Successfully",
-      cartItem: cartItem,
-    });
-    return cart;
+    res.status(200).json(cartItem);
+    // return cart;
   } catch (error) {
     console.log("an error has occured", error);
     res.status(500).send("Internal server error");
