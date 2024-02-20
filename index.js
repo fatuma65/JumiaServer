@@ -7,6 +7,10 @@ const sequelize = require("../JumiaServer/connect/database");
 app.use(bodyParser.json());
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, "client")));
+app.use(express.static(path.join(__dirname, "admin")));
+app.use(express.static('multerConfig'))
+app.use(express.urlencoded({ extended: true }));
 const UserRouters = require("./routes/userRouter");
 const productRouter = require("./routes/productRouter");
 const Category = require("./connect/models/Categories");
@@ -16,13 +20,10 @@ const CartModel = require("./connect/models/CartModel");
 const CartItem = require("./connect/models/CartItem");
 const OrderModel = require("./connect/models/OrderModel");
 const OrderItem = require("./connect/models/OrderItem");
-const port = 3000;
+const port = 4000;
 const cartRoutes = require("./routes/cartRoutes");
 const CategoryRoute = require("./routes/categoryRoute");
-app.use(express.static(path.join(__dirname, "client")));
-app.use(express.static(path.join(__dirname, "admin")));
-app.use(express.static('multerConfig'))
-app.use(express.urlencoded({ extended: true }));
+
 
 app.use("/users", UserRouters);
 app.use("/products", productRouter);

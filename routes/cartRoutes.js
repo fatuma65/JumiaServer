@@ -4,8 +4,11 @@ const {
   addProductToCart,
   getCartItems,
 } = require("../controllers/CartController");
-
+const express = require('express')
+const app = express()
 const router = require("express").Router();
+router.use(express.json())
+router.use(express.urlencoded({extended: true}))
 
 router.get("/get/cart/:UserId", getAllCartItems);
 router.get("get/cart", getCartItems);
