@@ -56,7 +56,6 @@ const updateUser = async (req, res) => {
   try {
     const userId = req.params.id;
     const updateAttributes = req.body;
-    // const updatedUser = await User.update({id})
 
     if (updateAttributes.password) {
       const hashedPassword = await bcrypt.hash(updateAttributes.password, 10);
@@ -66,7 +65,6 @@ const updateUser = async (req, res) => {
       where: { id: userId },
     });
     if (rowsUpdated > 0) {
-      // res.status(200).send('User updated successfully')
       return res.json(updateAttributes);
     } else {
       res.status(400).send("User not found");
@@ -80,14 +78,12 @@ const updateUser = async (req, res) => {
 // delete a User
 const deleteUser = async (req, res) => {
   try {
-    // sourcery skip: use-object-destructuring
     const id = req.params.id;
     const user = await User.findByPk(id);
     if (user) {
       user.destroy();
       res.status(200).send({ message: "User deleted successfully" });
     } else {
-      // res.status(400).send({error: 'User not found'})}
       res.status(400).send(console.log("an error has occured"));
     }
   } catch (error) {

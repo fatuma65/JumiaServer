@@ -5,7 +5,7 @@ This is a jumia eccomerce server that uses Node.js, Express and Sequelize to man
 These instructions will get you a copy of the project running on your local machine for development and testing purposes.
 
 # Prerequistes
-What things you need to install the sofyware and how to install them
+What things you need to install the software and how to install them
 - Node.js
 - npm
 - Postgresql
@@ -30,7 +30,7 @@ npx sequelize-cli db:migrate
 # Start the server
 npm start if you have nodemon intalled in your project.
 
-The server will now be running on port 4000. You can access the website by visiting http://localhost:3000 in your browser.
+The server will now be running on port 4000. You can access the website by visiting http://localhost:4000 in your browser.
 
 # Built With
 
@@ -40,16 +40,4 @@ The server will now be running on port 4000. You can access the website by visit
 - Postgresql - The database used
 - Multer - A node.js middleware for handling multipart/form-data, which is used for uploading files.
 
-# Acknowledgments
 
-npm install express
-npm install body-parser
-npm install cors
-npm install nodemon
-npm install jsonwebtoken
-npm install bcrypt
-npm install dotenv
-npm install multer
-npm install nodemon
-npm install sequelize
-npm install sequelize-cli

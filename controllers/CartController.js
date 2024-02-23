@@ -19,14 +19,15 @@ const addProductToCart = async (req, res) => {
     // if successful, we look for the product and its id
     const product = await Product.findByPk(productId);
     if (!product) {
-      return res.status(400).send("No product in the cart items");
+      return res.status(404).send("No product in the cart items");
     }
 
     let cartItem = await CartItem.findOne({
-      where: { cartId: cart.id, productId: productId },
+      where: { cartId: cart.id },
     });
     if (cartItem) {
-      const newQuantity = cartItem.quantity + parseInt(quantity, 10);
+      const newQuantity = parseInt(cartItem.quantity, 10)
+      // const newQuantity = cartItem.quantity + parseInt(quantity, 10);
       console.log(newQuantity);
       let totalPrice = product.price * newQuantity;
       console.log(totalPrice);
@@ -36,8 +37,7 @@ const addProductToCart = async (req, res) => {
         cartId: cart.id,
         productId: productId,
         quantity: parseInt(quantity, 10),
-        // UserId
-        // totalPrice:total
+  
       });
     }
     console.log(cartItem);
@@ -49,16 +49,6 @@ const addProductToCart = async (req, res) => {
     res.status(500).send("Internal server error");
   }
 };
-// const calculateTotalPrice = (cartItem) => {
-//   let totalPrice = 0
-//   for (const item of cartItem) {
-//     if (item && item.product && typeof item.product.price) {
-//       totalPrice += item.product.price * item.quantity
-//     }
-//   }
-//   return totalPrice
-
-// };
 
 // to get all cart items for the user
 const getAllCartItems = async (req, res) => {
@@ -87,8 +77,7 @@ const getCartItems = async (req, res) => {
     if (!cartItem) {
       res.status(404).send("carts are not found");
     }
-    // const cart = await CartItem.findAll({where: {cartId: cartItem.id}})
-    // console.log(cart)
+  
     res.status(200).json(cartItem);
   } catch (error) {
     console.log("Error loading all products", error);
