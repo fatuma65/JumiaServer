@@ -40,7 +40,6 @@ const getUser = async (req, res) => {
   try {
     const userRequest = req.params.id;
     const user = await User.findByPk(userRequest);
-    // user ? user : res.status(404).json({error: 'user not found'})
     if (!user) {
       return res.status(404).send("User is not found");
     }

@@ -87,7 +87,6 @@ const getProduct = async (req, res) => {
 // update a product
 const updateProduct = async (req, res) => {
   try {
-    // sourcery skip: use-object-destructuring
     const productId = req.params.productId;
     const [updatedRowsCount, updatedProduct] = await Product.update(
       {
