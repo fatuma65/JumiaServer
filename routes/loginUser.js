@@ -7,7 +7,12 @@ require("dotenv").config();
 const loginUser = async (req, res) => {
   try {
     const { username, password } = req.body;
-    console.log(req.body);
+    // console.log(req.body);
+    if(!username || !password) {
+      console.log('login has failed')
+      return res.status(400).send({error: 'Invalid username or password'})
+    }
+
     const existedUser = await User.findOne({ where: { username} });
 
     if (!existedUser) {

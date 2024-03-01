@@ -40,7 +40,7 @@ const addProductToCart = async (req, res) => {
   
       });
     }
-
+    console.log(cartItem)
     res.status(200).json(cartItem);
   } catch (error) {
     console.log("an error has occured", error);
