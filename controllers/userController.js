@@ -5,7 +5,13 @@ const User = require("../connect/models/userModel");
 const createUser = async (req, res) => {
   try {
     const { firstName, lastName, email, username, password } = req.body;
-    console.log(req.body);
+    // console.log(req.body);
+
+    if (!firstName || !lastName || !email || !username || !password) {
+      console.log('Registration has failed')
+      return res.status(400).send({error: 'Invalid credentials'})
+
+    }
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = await User.create({
