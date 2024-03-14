@@ -16,7 +16,7 @@ const createCategory = async (req, res) => {
 const getAllCategories = async (req, res) => {
   try {
     const categories = await Category.findAll();
-    res.status(200).json({ success: true, categories });
+    res.status(200).json(categories);
   } catch (error) {
     console.log("an error has occured", error);
     res.status(500).send("Internal server error");
@@ -71,7 +71,7 @@ const deleteCategory = async (req, res) => {
   }
 };
 module.exports = {
-  createCategory,
+  // createCategory,
   getAllCategories,
   getCategory,
   updateCategory,

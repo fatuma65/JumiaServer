@@ -21,7 +21,7 @@ const createUser = async (req, res) => {
       username,
       password: hashedPassword,
     });
-    console.log(newUser);
+    // console.log(newUser);
     res.status(200).send({ message: "User created successfully" });
     await newUser.save();
   } catch (error) {
@@ -44,12 +44,17 @@ const getAllUsers = async (req, res) => {
 // getting one user
 const getUser = async (req, res) => {
   try {
-    const userRequest = req.params.id;
-    const user = await User.findByPk(userRequest);
-    if (!user) {
+    const UserId = req.params.id;
+    const userI = parseInt(UserId, 10)
+    const userRequest = await User.findByPk(userI);
+    if (typeof userRequest === "undefined" || typeof userRequest === "string") {
+      console.error("user Id is undefined");
+    }
+    if (!userRequest) {
       return res.status(404).send("User is not found");
     }
-    res.status(200).send({ user });
+    res.status(200).json( userRequest );
+    // res.status(200).send({ user });
   } catch (error) {
     console.log("An error has occured", error);
     res.status(500).send({ error: "Internal Server error" });

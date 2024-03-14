@@ -1,9 +1,9 @@
-const Category = require("../connect/models/Categories");
 const Product = require("../connect/models/productModel");
+const NestedSubCategory = require('../connect/models/NestedSubCategory')
 
 // creating a new product
 const createProduct = async (req, res) => {
-  const { title, description, price, categoryId } = req.body;
+  const { title, description, price, nestedId } = req.body;
   console.log(req.body);
   try {
     if (!req.file) {
@@ -12,7 +12,7 @@ const createProduct = async (req, res) => {
     console.log("uploaded file", req.file);
     const originalName = req.file.filename;
 
-    const category = await Category.findByPk(categoryId);
+    const category = await NestedSubCategory.findByPk(nestedId);
     console.log(category);
     if (!category) {
       return res.status(404).send("Category not found");
@@ -22,7 +22,7 @@ const createProduct = async (req, res) => {
       description,
       image: originalName,
       price,
-      categoryId,
+      nestedId,
     });
     await newProduct.save();
     res
@@ -37,7 +37,7 @@ const createProduct = async (req, res) => {
 // GET ALL products
 const getAllProducts = async (req, res) => {
   try {
-    const products = await Product.findAll({ include: Category });
+    const products = await Product.findAll({ include: NestedSubCategory });
     if (!products) {
       res.status(404).send("Products not found");
     }
