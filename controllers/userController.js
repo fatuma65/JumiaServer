@@ -1,7 +1,5 @@
-const bcrypt = require("bcrypt");
 const User = require("../connect/models/userModel");
 const {hashed} = require('../utilis/helpers');
-const { where } = require("sequelize");
 
 // Creating a new User
 const createUser = async (req, res) => {

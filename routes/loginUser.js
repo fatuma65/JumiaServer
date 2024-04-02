@@ -1,6 +1,5 @@
 const jwt = require("jsonwebtoken");
 const User = require("../connect/models/userModel");
-const bcrypt = require("bcrypt");
 const {hashPassword} = require('../utilis/helpers')
 require("dotenv").config();
 
@@ -24,9 +23,6 @@ const loginUser = async (req, res) => {
       res.json({error:"User doesnot exist"});
     }
 
-
-    // const isPasswordValid = hashPassword(req.body.password)
-      // existedUser && (await bcrypt.compare(password, existedUser.password));
     else if (!isPasswordValid) {
       // res.status(404),
       res.json({error: "Incorrect password"}),
@@ -47,8 +43,6 @@ const loginUser = async (req, res) => {
     res.json({ token, username , UserId});
     res.status(200);
     }
-    // res.json({ token, username , UserId});
-    // await existedUser.save();
     console.log(`${username} you are now logged in`);
   } catch (error) {
     console.log(error);
