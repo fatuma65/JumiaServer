@@ -2,6 +2,7 @@ const {
   getAllCategories,
   getCategory,
   deleteCategory,
+  getCategoryAndSubcategory,
   updateCategory,
 } = require("../controllers/CategoryController");
 const {
@@ -19,9 +20,10 @@ router.delete("/delete/category/:id", deleteCategory);
 router.put("/update/category/:id", updateCategory);
 router.get("/get/subcategory", getAllSubCategories);
 router.get("/get/nestedsubcategory", getAllNestedCategories);
+router.get("/get/allCategories", getCategoryAndSubcategory);
 
 
 router.post("/create/subcategory", createCategoryWithSubCategory);
-router.post("/create/subcategory/subcategory", createNestedcategory);
+router.post("/create/nestedsubcategory", createNestedcategory);
 
 module.exports = router;

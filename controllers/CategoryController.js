@@ -1,4 +1,7 @@
 const Category = require("../connect/models/Categories");
+const SubCategory = require('../connect/models/SubCategory');
+const NestedCategory = require('../connect/models/NestedSubCategory');
+const { Model } = require("sequelize");
 
 // create a new category
 const createCategory = async (req, res) => {
@@ -16,10 +19,12 @@ const createCategory = async (req, res) => {
 const getAllCategories = async (req, res) => {
   try {
     const categories = await Category.findAll();
-    res.status(200).json(categories);
+    res.status(200),
+    res.json(categories);
   } catch (error) {
     console.log("an error has occured", error);
-    res.status(500).send("Internal server error");
+    res.status(500),
+    res.json("Internal server error");
   }
 };
 
@@ -29,12 +34,16 @@ const getCategory = async (req, res) => {
     const categoryId = req.params.id;
     const category = await Category.findByPk(categoryId);
     if (!category) {
-      return res.status(400).send("Category not found");
+      return res.status(400),
+      res.json({message: "Category not found"});
     }
-    res.status(200).json({ success: true, category });
+    res.status(200),
+    res.json(category );
+    // res.json({ success: true, category });
   } catch (error) {
-    console.log("an error has occured", error);
-    res.status(500).send("Internal server error");
+    console.log("an error has occured", error),
+    res.status(500),
+    res.json({error1: "Internal server error"})
   }
 };
 
@@ -70,10 +79,41 @@ const deleteCategory = async (req, res) => {
     res.status(500).send("Internal server error");
   }
 };
+const getCategoryAndSubcategory = async (req, res) => {
+  try {
+    const categories = await Category.findAll({
+      include: [
+        {
+          model: SubCategory,
+          include: [
+            {
+              model: NestedCategory, 
+            }
+          ]
+        }
+      ]
+    }
+    )
+
+    if (!categories) {
+      console.log('Nested category found')
+    }
+
+    res.status(200),
+    res.json(categories)
+
+  }
+  catch(error) {
+    console.log('an error has occured getting both categories and subcategories', (error))
+    res.status(500)
+    res.json({error: 'Internal Server error'})
+  }
+}
 module.exports = {
   // createCategory,
   getAllCategories,
   getCategory,
   updateCategory,
   deleteCategory,
+  getCategoryAndSubcategory
 };

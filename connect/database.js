@@ -4,18 +4,18 @@ const { Sequelize } = require("sequelize");
 const sequelize = new Sequelize("jumiadatabase", "postgres", "123456789", {
   host: "localhost",
   dialect: "postgres",
-  logging: console.log,
+  // logging: console.log,
   define: {timestamps:true}
 });
 
-sequelize
-  .authenticate()
-  .then(() => {
-    console.log("Connection to the database is successful");
-  })
-  .catch((error) => {
-    console.log("An error has occured", error);
-  });
+// sequelize
+//   .authenticate()
+//   .then(() => {
+//     console.log("Connection to the database is successful");
+//   })
+//   .catch((error) => {
+//     console.log("An error has occured", error);
+//   });
 
 // sequelize
 //   .sync({force: true})

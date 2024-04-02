@@ -15,11 +15,13 @@ const createCategoryWithSubCategory = async (req, res) => {
       });
       createdsubCategory.push(subcategory);
     }
-    console.log("Category with sub category created successfully", category);
-    console.log("sub Categories", createdsubCategory);
-    res.status(200).json({ category, subCategoryNames, createdsubCategory });
+    console.log("Category with sub category created successfully", category),
+    console.log("sub Categories", createdsubCategory),
+    res.status(200),
+    res.json({ category, subCategoryNames, createdsubCategory })
   } catch (error) {
-    res.status(500).send({ error: "Internal Server error" });
+    res.status(500),
+    res.json({ error: "Internal Server error" }),
     console.log(error);
   }
 };
