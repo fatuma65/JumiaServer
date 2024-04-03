@@ -41,13 +41,15 @@ jobs:
     - run: npm run build --if-present
     - name: Install Sequelize CLI
       run: npm install -g sequelize-cli
-    - name: Check PostgreSQL service container
-      run: |
-        psql -h localhost -U postgres -d jumiadatabase -c "SELECT version();"
+      
     - name: Get container IP address
       run: |
         echo "Container IP address: $(hostname -i)"
     
+    - name: Check PostgreSQL service container
+      run: |
+        psql -h localhost -U postgres -d jumiadatabase -c "SELECT version();"
+
     - name: Run database migrations
       run: sequelize db:migrate --config connect/config/config.json
 
