@@ -39,8 +39,12 @@ jobs:
     - name: install dependencies with npm ci
       run: npm ci
     - run: npm run build --if-present
-    - name: Database migration
-      run: npm run sequelize:migrate
+    - name: Change to directory with config.json
+      run: cd connect/config
+    - name: Run database migrations
+      run: sequelize db:migrate --config connect/config/config.json
+    # - name: Database migration
+    #   run: npm run sequelize:migrate
     - name: Run tests
       run: npm test
   
