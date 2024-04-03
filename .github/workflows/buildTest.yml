@@ -11,8 +11,6 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    container:
-      image: node:10.16-jessie
     services:
       postgres:
         image: postgres:10.8
@@ -33,13 +31,17 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
+    - name: Set up Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: npm i
-    - run: npm run build --if-present
-    - run: npm test
+    - name: install dependencies with npm ci
+      run: npm ci
+    # - run: npm run build --if-present
+    - name: Database migration
+      run: npm run sequelize:migrate
+    - name: Run tests
+      run: npm test
   
-      
+    
