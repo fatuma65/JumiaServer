@@ -2,7 +2,7 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "add-subCatgories" ]
   pull_request:
     branches: [ "main" ]
 
@@ -11,9 +11,24 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    container:
+      image: node:10.16-jessie
+    services:
+      postgres:
+        image: postgres:10.8
+        env:
+          DB_HOST: localhost
+          DB_USER: postgres
+          DB_PASSWORD: 123456789
+          DB_DATABASE: jumiadatabase
+        ports:
+        - 5432:5432
+        # needed because the postgres container does not provide a healthcheck
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
     strategy:
       matrix:
-        node-version: [14.x, 16.x, 18.x]
+        node-version: [16.x, 18.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
@@ -23,6 +38,8 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: npm install
+    - run: npm ci
     - run: npm run build --if-present
     - run: npm test
+  
+      
