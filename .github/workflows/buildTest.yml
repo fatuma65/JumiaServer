@@ -41,8 +41,6 @@ jobs:
     - run: npm run build --if-present
     - name: Install Sequelize CLI
       run: npm install -g sequelize-cli
-    - name: Run database migrations
-      run: sequelize db:migrate --config connect/config/config.json
     - name: Check PostgreSQL service container
       run: |
         psql -h localhost -U postgres -d jumiadatabase -c "SELECT version();"
@@ -50,6 +48,9 @@ jobs:
       run: |
         echo "Container IP address: $(hostname -i)"
     
+    - name: Run database migrations
+      run: sequelize db:migrate --config connect/config/config.json
+
     # - name: Database migration
     #   run: npm run sequelize:migrate
     - name: Run tests
