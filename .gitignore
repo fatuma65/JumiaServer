@@ -3,4 +3,3 @@ node_modules/
 #environments
 .env
 
-package-lock.json
