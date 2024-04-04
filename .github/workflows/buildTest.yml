@@ -46,11 +46,11 @@ jobs:
       run: |
         echo "Container IP address: $(hostname -i)"
   
-    - name: Run database migrations
-      # run: sequelize db:migrate --config connect/config/config.json
-      run: sequelize db:migrate --config connect/config/config.json --env postgres://postgres:123456789@localhost:5432/jumiadatabase
     # - name: Run database migrations
-    #   run: node connect/database.js
+    #   # run: sequelize db:migrate --config connect/config/config.json
+    #   run: sequelize db:migrate --config connect/config/config.json --env postgres://postgres:123456789@localhost:5432/jumiadatabase
+    - name: Run database migrations
+      run: node connect/database.js
 
     - name: Check PostgreSQL service container
       run: |
