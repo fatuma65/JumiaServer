@@ -52,9 +52,9 @@ jobs:
     - name: Run database migrations
       run: node connect/database.js
 
-    - name: Check PostgreSQL service container
-      run: |
-        psql -h localhost -U postgres -d jumiadatabase -c "SELECT version();"
+    # - name: Check PostgreSQL service container
+    #   run: |
+    #     psql -h localhost -U postgres -d jumiadatabase -c "SELECT version();"
 
     # - name: Database migration
     #   run: npm run sequelize:migrate
