@@ -8,17 +8,17 @@ const sequelize = new Sequelize('jumiadatabase', 'postgres', '123456789', {
 });
 
 // Define paths to models and migrations directories
-const modelsPath = path.join(__dirname, 'models');
-const migrationsPath = path.join(__dirname, 'migrations');
+// const modelsPath = path.join(__dirname, 'models');
+// const migrationsPath = path.join(__dirname, 'migrations');
 
-// Load models dynamically
-const fs = require('fs');
-fs.readdirSync(modelsPath).forEach(file => {
-  const model = require(path.join(modelsPath, file))(sequelize, Sequelize.DataTypes);
-  sequelize[model.name] = model;
-});
+// // Load models dynamically
+// const fs = require('fs');
+// fs.readdirSync(modelsPath).forEach(file => {
+//   const model = require(path.join(modelsPath, file))(sequelize, Sequelize.DataTypes);
+//   sequelize[model.name] = model;
+// });
 
-// Apply migrations
-sequelize.sync({ migrationStoragePath: migrationsPath });
+// // Apply migrations
+// sequelize.sync({ migrationStoragePath: migrationsPath });
 
 module.exports = sequelize;
