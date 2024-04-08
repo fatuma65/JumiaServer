@@ -20,33 +20,44 @@ const CartModel = require("./connect/models/CartModel");
 const CartItem = require("./connect/models/CartItem");
 const OrderModel = require("./connect/models/OrderModel");
 const OrderItem = require("./connect/models/OrderItem");
+const SubCategory = require('./connect/models/SubCategory')
+const Admin = require('./connect/models/Admin')
+const Rating = require("./connect/models/Rating");
+const NestedSubCategory = require('./connect/models/NestedSubCategory')
 const port = 4000;
 const cartRoutes = require("./routes/cartRoutes");
 const CategoryRoute = require("./routes/categoryRoute");
-
+const adminRoutes = require('./routes/adminRoute')
 
 app.use("/users", UserRouters);
 app.use("/products", productRouter);
 app.use("/cart", cartRoutes);
 app.use("/category", CategoryRoute);
+app.use('/admin', adminRoutes)
 
 // Relationships between different models.
-Category.hasMany(Product);
-Category.belongsTo(User);
 
-Product.belongsTo(Category);
-Product.belongsTo(User);
+Category.belongsTo(Admin);
+Category.hasMany(SubCategory, {foreignKey: 'categoryId'})
+
+SubCategory.hasMany(NestedSubCategory, {foreignKey: "subCategoryId"})
+SubCategory.belongsTo(Category, {foreignKey: 'categoryId'})
+
+NestedSubCategory.belongsTo(SubCategory, {foreignKey: 'subCategoryId'});
+Product.belongsTo(NestedSubCategory, {foreignKey: "nestedId"});
+NestedSubCategory.hasMany(Product, {foreignKey: 'nestedId'})
 Product.belongsToMany(CartModel, { through: CartItem });
 Product.belongsToMany(OrderModel, { through: OrderItem });
+Product.hasMany(Rating)
 
-User.hasMany(Category);
 User.hasMany(Product);
 User.hasOne(CartModel);
 User.hasMany(OrderModel);
 
+Rating.belongsTo(User, {foreignKey: 'userId'})
+
 CartModel.belongsTo(User);
-// CartItem.belongsTo(Product)
-// CartModel.hasMany(CartItem)
+
 CartModel.belongsToMany(Product, { through: CartItem });
 
 OrderModel.belongsTo(User);
@@ -62,7 +73,7 @@ app.use((err, req, res, next) => {
 });
 
 // sequelize
-//   .sync()
+//   .sync({force: true})
 //   .then(() => {
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
@@ -71,3 +82,5 @@ app.listen(port, () => {
 // .catch((error) => {
 //   console.error(error);
 // });
+module.exports = app
+// "test": "echo \"Error: no test specified\" && exit 1",

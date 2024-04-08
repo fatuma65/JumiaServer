@@ -1,0 +1,64 @@
+name: Node.js CI
+
+on:
+  push:
+    branches: [ "add-subCatgories" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:10.8
+        env:
+          DB_HOST: localhost
+          DB_USER: postgres
+          DB_PASSWORD: 123456789
+          DB_DATABASE: jumiadatabase
+        ports:
+        - 5432:5432
+        # needed because the postgres container does not provide a healthcheck
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    - name: install dependencies with npm ci
+      run: npm ci
+    - run: npm run build --if-present
+    - name: Install Sequelize CLI
+      run: npm install -g sequelize-cli
+
+    - name: Get container IP address
+      run: |
+        echo "Container IP address: $(hostname -i)"
+  
+    # - name: Run database migrations
+    #   # run: sequelize db:migrate --config connect/config/config.json
+    #   run: sequelize db:migrate --config connect/config/config.json --env postgres://postgres:123456789@localhost:5432/jumiadatabase
+    - name: Run database migrations
+      run: node connect/database.js
+
+    # - name: Check PostgreSQL service container
+    #   run: |
+    #     psql -h localhost -U postgres -d jumiadatabase -c "SELECT version();"
+
+    # - name: Database migration
+    #   run: npm run sequelize:migrate
+    - name: Run tests
+      run: npm run test
+  
+    

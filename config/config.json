@@ -4,12 +4,7 @@
     "password": "123456789",
     "database": "jumiadatabase",
     "host": "localhost",
-    "dialect": "postgres",
-    "dialectOptions": {
-      "ssl": false
-    },
-    "modelsDir": "models",
-    "migrationsDir": "migrations"
+    "dialect": "postgres"
   },
   "test": {
     "username": "root",

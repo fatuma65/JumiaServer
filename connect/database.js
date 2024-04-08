@@ -1,27 +1,24 @@
-// require('dotenv').config()
-const { Sequelize } = require("sequelize");
+const { Sequelize } = require('sequelize');
+const path = require('path');
 
-const sequelize = new Sequelize("jumiadatabase", "postgres", "123456789", {
-  host: "localhost",
-  dialect: "postgres",
-  logging: console.log,
-  define: {timestamps:true}
+// Initialize Sequelize with your database configuration
+const sequelize = new Sequelize('jumiadatabase', 'postgres', '123456789', {
+  host: 'localhost',
+  dialect: 'postgres',
 });
 
-sequelize
-  .authenticate()
-  .then(() => {
-    console.log("Connection to the database is successful");
-  })
-  .catch((error) => {
-    console.log("An error has occured", error);
-  });
+// Define paths to models and migrations directories
+// const modelsPath = path.join(__dirname, 'models');
+// const migrationsPath = path.join(__dirname, 'migrations');
 
-// sequelize
-//   .sync({force: true})
-//   .then(() => {
-//     console.log("Models synced successsfully");
-//   })
-//   .catch((error) => console.error("An error has occured", error));
+// // Load models dynamically
+// const fs = require('fs');
+// fs.readdirSync(modelsPath).forEach(file => {
+//   const model = require(path.join(modelsPath, file))(sequelize, Sequelize.DataTypes);
+//   sequelize[model.name] = model;
+// });
 
-  module.exports = sequelize
+// // Apply migrations
+// sequelize.sync({ migrationStoragePath: migrationsPath });
+
+module.exports = sequelize;
